@@ -5,7 +5,8 @@
 
 <h2>Dodaj nową książkę</h2>
 
-<form:form modelAttribute="book" action="/book/form/save">
+<form:form modelAttribute="book" >
+    <form:hidden path="id"/>
     Tytuł: <form:input path="title"/><br/>
     Rating: <form:input path="rating"/><br/>
     Opis:<form:textarea cols="50" rows="20" path="description"/><br/>
