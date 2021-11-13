@@ -1,6 +1,7 @@
 package pl.coderslab.SpringHibernateModul6.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,7 +10,10 @@ import pl.coderslab.SpringHibernateModul6.dao.BookDao;
 import pl.coderslab.SpringHibernateModul6.dao.PublisherDao;
 import pl.coderslab.SpringHibernateModul6.entity.Author;
 import pl.coderslab.SpringHibernateModul6.entity.Book;
+import pl.coderslab.SpringHibernateModul6.entity.Category;
 import pl.coderslab.SpringHibernateModul6.entity.Publisher;
+import pl.coderslab.SpringHibernateModul6.repository.BookRepository;
+import pl.coderslab.SpringHibernateModul6.repository.CategoryRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,12 +24,45 @@ public class BookController {
     private final BookDao bookDao;
     private final PublisherDao publisherDao;
     private final AuthorDao authorDao;
+    private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
 
-    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao) {
+    public BookController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao, BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookDao = bookDao;
         this.publisherDao = publisherDao;
         this.authorDao = authorDao;
+        this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
+
+    @GetMapping("/byTitle/{title}")
+    @ResponseBody
+    public String findByTitleRepository(@PathVariable("title") String title) {
+        return bookRepository.findFirstByTitle(title)
+                .map(Book::toString)
+                .orElse("Ksiazki nie znaleizono o zadanym tytule");
+    }
+
+    @GetMapping("/byCat/{idCategory}")
+    @ResponseBody
+    public String findByCatObject(@PathVariable("idCategory") long idCategory) {
+        Category cat = categoryRepository.getById(idCategory);
+        return bookRepository.findAllByCategory(cat)
+                .stream()
+                .map(Book::toString)
+                .collect(Collectors.joining("<br />"));
+    }
+
+    @GetMapping("/byCategoryId/{idCategory}")
+    @ResponseBody
+    public String findByCatId(@PathVariable("idCategory") long idCategory) {
+        return bookRepository.findAllByCategory_Id(idCategory)
+                .stream()
+                .map(Book::toString)
+                .collect(Collectors.joining("<br />"));
+    }
+
+
 
     @RequestMapping("/add")
     @ResponseBody

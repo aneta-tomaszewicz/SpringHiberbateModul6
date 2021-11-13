@@ -1,7 +1,11 @@
 package pl.coderslab.SpringHibernateModul6.entity;
 
-
+import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +16,29 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Size(min = 5)
     private String title;
+
+    @Range(min =1, max =10, message ="Wartości mają być  od 1 do 10" )
     private int rating;
+
+    @Size(max = 600)
     private String description;
 
     @ManyToOne
+    @NotNull
     private Publisher publisher;
 
     @ManyToMany
+    @NotEmpty
     private List<Author> authors = new ArrayList<>();
+
+    @Min(1)
+    private int pages;
+
+    @ManyToOne
+    private Category category;
 
     public List<Author> getAuthors() {
         return authors;
@@ -70,6 +88,22 @@ public class Book {
         this.description = description;
     }
 
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -79,6 +113,7 @@ public class Book {
                 ", description='" + description + '\'' +
                 ", publisher=" + publisher +
                 ", authors=" + authors +
+                ", pages=" + pages +
                 '}';
     }
 }

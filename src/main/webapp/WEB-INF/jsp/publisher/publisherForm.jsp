@@ -8,5 +8,13 @@
 <form:form modelAttribute="publisher">
     <form:hidden path="id"/>
     Nazwa:<form:input path="name"/><br>
-    <input type="submit" value="dodaj wydawcę"/>
+    <form:errors path ="name"/><br>
+
+    Regon:<form:input path="regon"/><br>
+    <form:errors path ="regon"/><br>
+
+    Nip:<form:input path="nip"/><br>
+    <form:errors path ="nip"/><br>
+
+    <input type="submit" value="zapisz"/>
 </form:form>

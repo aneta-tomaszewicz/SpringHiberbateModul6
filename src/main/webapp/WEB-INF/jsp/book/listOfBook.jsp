@@ -3,7 +3,9 @@
            uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:forEach items="${books}" var="b">
+<a href="/book/form/add">Dodaj nową książkę</a><br>
+<hr>
+<c:forEach items="${books}" var="b"><br>
     <strong><c:out value="${b.title}:${b.publisher.name}"/></strong><br>
     <c:out value="${b.description}"/><br>
     <c:forEach items="${b.authors}" var ="a" varStatus="loop">
@@ -14,6 +16,6 @@
 
     <hr>
 </c:forEach>
-<a href="/book/form/add">Dodaj nową książkę</a>
+
 
 
